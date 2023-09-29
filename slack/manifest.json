@@ -1,0 +1,56 @@
+{
+    "display_information": {
+        "name": "GuardBot"
+    },
+    "features": {
+        "bot_user": {
+            "display_name": "GuardBot",
+            "always_online": false
+        },
+        "slash_commands": [
+            {
+                "command": "/hello",
+                "description": "hello",
+                "should_escape": false
+            },
+            {
+                "command": "/sentiment",
+                "description": "sentiment",
+                "should_escape": false
+            }
+        ]
+    },
+    "oauth_config": {
+        "scopes": {
+            "user": [
+                "channels:read",
+                "channels:write",
+                "chat:write"
+            ],
+            "bot": [
+                "chat:write",
+                "chat:write.public",
+                "commands",
+                "im:history",
+                "im:read",
+                "im:write",
+                "channels:history",
+                "groups:history",
+                "mpim:history"
+            ]
+        }
+    },
+    "settings": {
+        "event_subscriptions": {
+            "bot_events": [
+                "message.channels"
+            ]
+        },
+        "interactivity": {
+            "is_enabled": true
+        },
+        "org_deploy_enabled": false,
+        "socket_mode_enabled": true,
+        "token_rotation_enabled": false
+    }
+}
