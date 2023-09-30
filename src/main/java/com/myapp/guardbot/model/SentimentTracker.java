@@ -33,6 +33,16 @@ public class SentimentTracker {
     }
 
     private void setScore(){
+        score = queue.stream()
+                .mapToDouble(m -> switch (m.getSentiment()) {
+                    case VERY_POSITIVE -> 2.0;
+                    case POSITIVE -> 1.0;
+                    case NEGATIVE -> -1.0;
+                    case VERY_NEGATIVE -> -2.0;
+                    default -> 0.0;
+                }).average().orElse(0.0);
+
+        profanePercent = ((double) queue.stream().filter(Message::getIsProfane).count() / queue.size());
     }
 
     public Sentiment getAvergaeSentiment(){

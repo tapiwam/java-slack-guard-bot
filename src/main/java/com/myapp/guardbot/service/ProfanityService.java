@@ -25,6 +25,9 @@ public class ProfanityService {
     @Value("classpath*:bad-words/*")
     private Resource[] files;
 
+    @Value("${application.profanity.threshold:75}")
+    private Integer profanityThreshold;
+
     // A list of bad words organized by language
     @Getter
     Map<String, Set<String>> badWordsByLanguage;
@@ -48,8 +51,21 @@ public class ProfanityService {
     }
 
     public boolean isProfane(String text) {
-        // TODO
-        return false;
+        return badWordsByLanguage.get("en").stream().anyMatch(text.toLowerCase()::contains) ||
+                badWordsByLanguage.get("en").stream()
+                        .map(badWord -> {
+
+                            List<Integer> fuzzyMatchScores = Arrays.stream(text.split(" "))
+                                    .map(String::toLowerCase)
+                                    .map(token -> FuzzySearch.ratio(badWord, token))
+                                    .toList();
+
+                            return Collections.max(fuzzyMatchScores);
+                        })
+
+                        // We have a 75% match we assume it is profane
+                        .anyMatch(r -> r > profanityThreshold)
+                ;
     }
 
 }
